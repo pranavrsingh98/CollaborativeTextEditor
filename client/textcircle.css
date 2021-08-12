@@ -1,0 +1,91 @@
+/* CSS declarations go here */
+
+.top-margin{
+	margin-top:60px;
+}
+
+#viewer_iframe{
+	border:1px solid gray;
+	resize:both;
+	width:100%;
+}
+
+.light-border{
+	border: 1px solid gray;
+	width: 100%;
+}
+
+.glyphicon.glyphicon-trash {
+  display: block;
+  margin-left: 130px;
+  margin-right: auto;
+  font-size: 15px;
+}
+
+.glyphicon.glyphicon-trash:hover {
+  color: black;
+}
+
+.glyphicon.glyphicon-file {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 100px;
+}
+
+.thumbnail {
+  background-color: #808080; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  height: 220px;
+  width: 210px;
+}
+
+.thumbnail {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #808080;
+}
+
+.thumbnail:hover {
+  background-color: #808080;
+  color: white;
+  text-decoration: none;
+}
+
+.title{
+  color: black;
+  padding: 1em;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title:hover {
+  overflow: visible;
+}
+
+.doclink{
+  color: black;
+  text-decoration: none;
+}
+
+.doclink:hover{
+  text-decoration: none;
+  color: white;
+}
+
+.glyphicon-trash{
+  color: black;
+}
+.glyphicon-trash:hover{
+  color: white;
+}

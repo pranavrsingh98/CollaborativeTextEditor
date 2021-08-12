@@ -1,0 +1,17 @@
+<template name ="docList">
+	<div class="container top-margin">
+		<h2>{{listTitle}}</h2>
+		<div class="row">
+		{{#each documents}}
+		<div class="col-md-3 col-xs-6">
+			<div class="thumbnail">	
+				<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+				<a href="/documents/{{_id}}" class="doclink"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+				<div class = "title">{{title}}</div></a>
+			</div>
+
+		</div>
+		{{/each}}
+		</div>
+	</div>
+</template>
