@@ -39,7 +39,7 @@
         editor.setOption("theme", "cobalt");
           // respond to edits in the code editor window
         editor.on("change", function(cm_editor, info){
-          $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
+          console.log($("#viewer_iframe").contents().find("html").html(cm_editor.getValue()));
           Meteor.call("addEditingUser",Session.get("docid"));
         });
       }
@@ -68,6 +68,9 @@
     // return a list of all visible documents
     documents:function(){
       return Documents.find();
+    },
+    showDropdown:function() {
+
     }
   })
 
@@ -113,7 +116,11 @@
     },
     documents:function(){
       if(Meteor.userId()){
+        $(".dropdown-toggle").show();  //also enable the document dropdown
         return Documents.find();
+      }
+      else{
+        $(".dropdown-toggle").hide(); //also disable the document dropdown
       }
     }
   })
@@ -159,6 +166,7 @@
     "click .js-load-doc":function(event){
       //console.log(this);
       Session.set("docid", this._id);
+      console.log("aAddDadADa");
     }
   });
 
@@ -234,6 +242,8 @@ function fixObjectKeys(obj){
   }
   return newObj;
 }
+
+
 
 function dropDownVisibility() {
   var x = document.getElementByclass("dropdown");

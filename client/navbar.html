@@ -1,4 +1,4 @@
-<template name="navbar">  
+<template name="navbar">
 <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <a class="navbar-brand" href="/">TextCircle</a>
@@ -7,14 +7,20 @@
             <a href="#" class="js-add-doc">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
               new document
-            </a> 
+            </a>
           </li>
 
 
           <!-- drop down list -->
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documents <span class="caret"></span></a>
-
+            <!-- <script type="text/javascript">
+              $(window).load(function() {
+                if(!Meteor.userId()){
+                  $(".dropdown-toggle").hide();
+                }
+              })
+            </script> -->
+          <a href="#" id ="selectDoc" style = "display:none" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documents <span class="caret"></span></a>
           <ul class="dropdown-menu">
             {{#each documents}}
             <li><a href="/documents/{{_id}}" class="">{{title}}</a></li>
@@ -27,8 +33,8 @@
         <div class="navbar-text">
             {{> loginButtons align="right"}}
 
-        </div>   
-        </div>       
+        </div>
+        </div>
       </div> <!-- / nav container -->
-  </nav> 
+  </nav>
 </template>
