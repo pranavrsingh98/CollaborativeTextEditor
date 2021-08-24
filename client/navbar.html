@@ -13,14 +13,8 @@
 
           <!-- drop down list -->
           <li class="dropdown">
-            <!-- <script type="text/javascript">
-              $(window).load(function() {
-                if(!Meteor.userId()){
-                  $(".dropdown-toggle").hide();
-                }
-              })
-            </script> -->
-          <a href="#" id ="selectDoc" style = "display:none" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documents <span class="caret"></span></a>
+            <!-- <button class="button" name="button">Adios !!!!!!!!</button> -->
+          <a href="#" id ="selectDoc" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documents <span class="caret"></span></a>
           <ul class="dropdown-menu">
             {{#each documents}}
             <li><a href="/documents/{{_id}}" class="">{{title}}</a></li>
@@ -32,7 +26,6 @@
         <div class="nav navbar-right">
         <div class="navbar-text">
             {{> loginButtons align="right"}}
-
         </div>
         </div>
       </div> <!-- / nav container -->

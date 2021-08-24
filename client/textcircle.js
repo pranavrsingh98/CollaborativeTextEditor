@@ -17,13 +17,13 @@
   });
 
   Router.route('/documents/:_id',function(){
+    privateDocIndicator();
     console.log("you hit /documents "+this.params._id);
     Session.set("docid",this.params._id);
     this.render('navbar',{to:"header"}); //written infront of yield
     this.render('docItem',{to:"main"});
     // this.render('docItem',{to:"docItem"});
   });
-
 
 
   Template.editor.helpers({
@@ -39,7 +39,7 @@
         editor.setOption("theme", "cobalt");
           // respond to edits in the code editor window
         editor.on("change", function(cm_editor, info){
-          console.log($("#viewer_iframe").contents().find("html").html(cm_editor.getValue()));
+          $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
           Meteor.call("addEditingUser",Session.get("docid"));
         });
       }
@@ -69,28 +69,44 @@
     documents:function(){
       return Documents.find();
     },
-    showDropdown:function() {
-
-    }
   })
 
   Template.docMeta.helpers({
     // return current document
     document:function(){
-      return Documents.findOne({_id:Session.get("docid")});
+      var doc = Documents.findOne({_id:Session.get("docid")});
+      return doc;
     },
     // return true if I am allowed to edit the current doc, false otherwise
     canEdit:function(){
       var doc;
       doc = Documents.findOne({_id:Session.get("docid")});
-      if (doc){
-        if (doc.owner == Meteor.userId()){
-          return true;
-        }
+      console.log("Selected Doc:" + doc.isPrivate);
+      if (doc.owner == Meteor.userId()){
+        return true;
       }
       return false;
     }
-  })
+  });
+
+  function privateDocIndicator() {
+    var doc;
+    doc = Documents.findOne({_id:Session.get("docid")});
+    if (doc){
+      ////////////////////////////////////////////////////  To Check the Private Checkbox
+      if(document.getElementById("private")){
+        if(doc.isPrivate==true){
+          document.getElementById("private").checked = true;
+          console.log("Private");
+        }
+        else {
+          document.getElementById("private").checked = false;
+          console.log("Public");
+        }
+      }
+      ///////////////////////////////////////////////////
+    }
+  }
 
   Template.editableText.helpers({
     // return true if I am allowed to edit the current doc, false otherwise
@@ -115,13 +131,8 @@
         return "Please Login to View your Documents."
     },
     documents:function(){
-      if(Meteor.userId()){
-        $(".dropdown-toggle").show();  //also enable the document dropdown
-        return Documents.find();
-      }
-      else{
-        $(".dropdown-toggle").hide(); //also disable the document dropdown
-      }
+      hideDropdown();
+      return Documents.find();
     }
   })
 
@@ -167,6 +178,11 @@
       //console.log(this);
       Session.set("docid", this._id);
       console.log("aAddDadADa");
+    },
+
+    "click #login-buttons-logout":function(){
+      // alert("Logged out !!!!!");
+      $(".navbar-brand").click();
     }
   });
 
@@ -174,9 +190,10 @@
     // toggle the private checkbox
     "click .js-tog-private":function(event){
       console.log(event.target.checked);
+      if(event.target.checked)
+        $('#checkbox').prop('checked', true);
       var doc = {_id:Session.get("docid"), isPrivate:event.target.checked};
       Meteor.call("updateDocPrivacy", doc);
-
     }
   });
 
@@ -199,7 +216,7 @@
           if (result.value) {
             swal(
               'Deleted!',
-              'Your file '+title+' has been deleted.',
+              'Your file "'+title+'" has been deleted.',
               'success'
             )
             Meteor.call("deleteDoc",this._id,function(err,res){
@@ -211,7 +228,7 @@
           } else if (result.dismiss === 'cancel') {
             swal(
               'Cancelled',
-              'Your file '+title+' is safe :)',
+              'Your file "'+title+'" is safe :)',
               'error'
             )
           }
@@ -244,12 +261,20 @@ function fixObjectKeys(obj){
 }
 
 
+$(window).load(function() {     // becasue of this query dropdown funtion will be called on each window load
+  hideDropdown();
+});
 
-function dropDownVisibility() {
-  var x = document.getElementByclass("dropdown");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
+function hideDropdown() {
+    var usrSTS = Boolean(Meteor.userId());
+    $(".dropdown-toggle")
+    if(usrSTS == true){
+      $(".dropdown-toggle").show();  //also enable the document dropdown
+      //console.log("show fired");
+    }
+    else{
+      // $(".button").hide();
+      $(".dropdown-toggle").hide(); //also disable the document dropdown
+      //console.log("hide fired");
+    }
 }
