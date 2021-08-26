@@ -10,7 +10,7 @@
   });
 
   Router.route('/',function(){
-    console.log("you hit /");
+    //console.log("you hit /");
     this.render('navbar',{to:"header"}); //written infront of yield
     this.render('docList',{to:"main"});
     // this.render('docItem',{to:"docItem"});
@@ -18,7 +18,7 @@
 
   Router.route('/documents/:_id',function(){
     privateDocIndicator();
-    console.log("you hit /documents "+this.params._id);
+    //console.log("you hit /documents "+this.params._id);
     Session.set("docid",this.params._id);
     this.render('navbar',{to:"header"}); //written infront of yield
     this.render('docItem',{to:"main"});
@@ -132,7 +132,9 @@
     },
     documents:function(){
       hideDropdown();
+      showEmptyMsg();
       return Documents.find();
+
     }
   })
 
@@ -263,6 +265,7 @@ function fixObjectKeys(obj){
 
 $(window).load(function() {     // becasue of this query dropdown funtion will be called on each window load
   hideDropdown();
+  showEmptyMsg();
 });
 
 function hideDropdown() {
@@ -277,4 +280,16 @@ function hideDropdown() {
       $(".dropdown-toggle").hide(); //also disable the document dropdown
       //console.log("hide fired");
     }
+}
+
+
+function showEmptyMsg(){
+  if(Documents.find().count()){
+    $(".noDoc").hide();
+    //console.log("Hide Fired");
+  }
+  else {
+    //console.log("show fired");
+    $(".noDoc").show();
+  }
 }

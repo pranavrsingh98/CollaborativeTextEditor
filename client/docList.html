@@ -1,6 +1,12 @@
 <template name ="docList">
 	<div class="container top-margin">
 		<h2>{{listTitle}}</h2>
+		<div class="noDoc" style="display:none">
+				<ul>
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					<h1>You Have No Documents</h1>
+				</ul>
+		</div>
 		<div class="row">
 		{{#each documents}}
 		<div class="col-md-3 col-xs-6">

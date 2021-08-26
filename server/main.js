@@ -1,8 +1,8 @@
 Meteor.startup(function () {
     // create a starter doc
-    if (!Documents.findOne()){// no documents yet!
-        Documents.insert({title:"my new document"});
-    }
+    // if (!Documents.findOne()){// no documents yet!
+    //     Documents.insert({title:"Demo Doc"});
+    // }
   });
   // publish a list of documents the user can se
   Meteor.publish("documents", function(){
@@ -10,9 +10,9 @@ Meteor.startup(function () {
      $or:[
       {isPrivate:{$ne:true}},  //$ne means not equal to
       {owner:this.userId}
-      ] 
+      ]
     });
-  })  
+  })
   // public sets of editing users
   Meteor.publish("editingUsers", function(){
     return EditingUsers.find();
