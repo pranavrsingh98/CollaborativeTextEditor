@@ -134,7 +134,6 @@
       hideDropdown();
       showEmptyMsg();
       return Documents.find();
-
     }
   })
 
@@ -161,25 +160,45 @@
     // add a new document button
     "click .js-add-doc":function(event){
       event.preventDefault();
-      console.log("Add a new doc!");
+      //console.log("Add a new doc!");
       if (!Meteor.user()){// user not available
-          alert("You need to login first!");
+          swal("Cannot Add a Doc!!","You need to login first","error");
       }
       else {
         // they are logged in... lets insert a doc
-        var id = Meteor.call("addDoc","passed", function(err, res){
-          if (!err){// all good
-            console.log("event callback received id: "+res);
-            Session.set("docid", res);
-          }
-        });
+        //////////////////////////////////////////////////////////////////
+        swal({
+          title: 'Name of Document:',
+          input: "text",
+          //type: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Add',
+          cancelButtonText: 'Cancel'
+          }).then((result) => {
+            console.log(result.value);
+            if (result.value) {
+              //swal(result.value,"Added !!!")
+              var id = Meteor.call("addDoc",result.value, function(err, res){
+                if (!err){// all good
+                  //console.log("event callback received id: "+res);
+                  Session.set("docid", res);
+                }
+              });
+            }
+            // else{
+            //   swal("Failed to add doc!!!","No Document name provided","error");
+            // }
+          });
+
+        /////////////////////////////////////////////////////////////////
+
       }
     },
     // load a document link
     "click .js-load-doc":function(event){
       //console.log(this);
       Session.set("docid", this._id);
-      console.log("aAddDadADa");
+      //console.log("aAddDadADa");
     },
 
     "click #login-buttons-logout":function(){
