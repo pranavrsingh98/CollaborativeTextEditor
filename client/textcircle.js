@@ -133,7 +133,8 @@
     documents:function(){
       hideDropdown();
       showEmptyMsg();
-      return Documents.find();
+      if(Meteor.userId())
+        return Documents.find();
     }
   })
 
@@ -215,7 +216,44 @@
         $('#checkbox').prop('checked', true);
       var doc = {_id:Session.get("docid"), isPrivate:event.target.checked};
       Meteor.call("updateDocPrivacy", doc);
-    }
+    },
+    "click #delete":function(event){
+      var doc;
+      var title = Documents.findOne({_id:this._id}).title;
+      //alert(title);
+      //alert("event triggred "+title);
+      //console.log(this._id);
+      //cleandersonlobo:sweetalert2 was used
+      swal({
+        title: 'Are you sure?',
+        text: "You will not be able to recover the file: "+title,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+        }).then((result) => {
+          if (result.value) {
+            swal(
+              'Deleted!',
+              'Your file "'+title+'" has been deleted.',
+              'success'
+            )
+            Meteor.call("deleteDoc",this._id,function(err,res){
+              if(!err){
+                $(".navbar-brand").click();
+                //console.log("Doc Removed!!");
+              }
+            })
+            // result.dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+          } else if (result.dismiss === 'cancel') {
+            swal(
+              'Cancelled',
+              'Your file "'+title+'" is safe :)',
+              'error'
+            )
+          }
+        })
+      }
   });
 
   Template.docList.events({
@@ -242,7 +280,8 @@
             )
             Meteor.call("deleteDoc",this._id,function(err,res){
               if(!err){
-                console.log("Doc Removed!!");
+                $(".navbar-brand").click();
+                //console.log("Doc Removed!!");
               }
             })
             // result.dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
@@ -289,21 +328,21 @@ $(window).load(function() {     // becasue of this query dropdown funtion will b
 
 function hideDropdown() {
     var usrSTS = Boolean(Meteor.userId());
-    $(".dropdown-toggle")
+    // $(".dropdown-toggle")
     if(usrSTS == true){
-      $(".dropdown-toggle").show();  //also enable the document dropdown
+      $("#selectDoc").show();  //also enable the document dropdown
       //console.log("show fired");
     }
     else{
       // $(".button").hide();
-      $(".dropdown-toggle").hide(); //also disable the document dropdown
+      $("#selectDoc").hide(); //also disable the document dropdown
       //console.log("hide fired");
     }
 }
 
 
 function showEmptyMsg(){
-  if(Documents.find().count()){
+  if(Documents.find().count() || !Meteor.userId()){
     $(".noDoc").hide();
     //console.log("Hide Fired");
   }
